@@ -1,0 +1,12 @@
+{
+  "name": "meat-shop-order-sim",
+  "version": "1.0.0",
+  "private": true,
+  "description": "肉舖日常：精肉部門叫貨、加工與排班教學模擬",
+  "scripts": {
+    "test": "node tests/check.cjs && node tests/deputy.cjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict');
+const G=require('../dist/engine.js'),D=require('../dist/advisor.js');
+const s=G.initial(),d=G.draft(),before=JSON.stringify({s,d});
+let c=D.inspect(G,s,d);assert(c.some(x=>x.title==='今日效期'&&x.text.includes('20')));assert(c.some(x=>x.title.includes('午間供應')));
+const r=G.simulate(s,d);c=D.inspect(G,s,d,r,11);assert(!c.some(x=>/12:00|16:00|21:00|報廢檢討/.test(x.title)));
+c=D.inspect(G,s,d,r,12);assert(c.some(x=>x.title==='12:00 現場回報'));assert(!c.some(x=>x.title==='16:00 現場回報'));
+c=D.inspect(G,s,d,r,22);assert(c.some(x=>x.title==='報廢檢討'));assert(c.some(x=>x.title==='人工與利益'));
+assert.equal(JSON.stringify({s,d}),before);
+const bad=G.draft();bad.staff={early:0,middle:0,late:0};assert(D.inspect(G,s,bad).some(x=>x.title==='草稿需要修正'));
+console.log('副主任檢查：效期、供應、時間隔離、收班檢討、無副作用與無效排班均通過');
